@@ -70,6 +70,8 @@ def main():
     args.add_argument("--engine", type=str)
     args.add_argument("--name-override", type=str)
     args.add_argument("--azure", action="store_true")
+    args.add_argument("--all_ids_dict", default=None, type=str)
+    args.add_argument("--split", choices=["train", "test", "val", "all"], type=str, help="Subset of the data to run on (train/val/test/all).")
     args = args.parse_args()
 
     if args.engine is None and args.model is None:

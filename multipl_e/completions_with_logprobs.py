@@ -7,6 +7,7 @@ from tqdm import tqdm
 import sys
 from typing import List
 import os
+import ast
 
 DATASET_REVISION = "8a4cb75204eb3d5855a81778db6b95bfc80c9136"
 
@@ -135,10 +136,12 @@ def make_main(args, model_name, gen_completions):
         if args.input_limit is not None
         else len(problems),
     )
-    ids_to_discard = json.load(open("/evo/homes/crupig/empirical_rankers_hq/benchmarks/constants/ids_to_discard.json", "r"))['MultiPL-E']
-    
-    # problems = problems.select(range(start_index, stop_index))
-    problems = problems.filter(lambda example: example["name"] not in ids_to_discard)
+
+    if args.split != "all":
+        ids_to_keep = ast.literal_eval(args.all_ids_dict)["MultiPL-E"][args.split]
+        problems = problems.filter(lambda example: example["name"] in ids_to_keep)
+    else:
+        problems = problems.select(range(start_index, stop_index))
 
     # Read all existing completions
     all_completions = dict(read_completions(

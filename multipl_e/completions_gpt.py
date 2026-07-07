@@ -125,13 +125,11 @@ def make_main(args, model_name, gen_completions):
         else len(problems),
     )
 
-    ids_to_keep = json.load(open("/evo/homes/crupig/empirical_rankers_hq/constants/ids_train_val_test.json", "r"))['MultiPL-E']['test']
-    # ids_to_keep = ["mbpp_4_heap_queue_largest",
-    #         "mbpp_9_find_Rotations",
-    #         ]
-    
-    # problems = problems.select(range(start_index, stop_index))
-    problems = problems.filter(lambda example: example["name"] in ids_to_keep)
+    if args.split != "all":
+        ids_to_keep = ast.literal_eval(args.all_ids_dict)["MultiPL-E"][args.split]
+        problems = problems.filter(lambda example: example["name"] in ids_to_keep)
+    else:
+        problems = problems.select(range(start_index, stop_index))
 
     # Read all existing completions
     all_completions = dict(read_completions(

@@ -39,52 +39,6 @@ class Model:
             self.tokenizer.eos_token_id in self._all_special_token_ids
         ), "eos_token_id not in all_special_ids"
 
-    # def completion_tensors_batch1(
-    #     self,
-    #     prompts: list,
-    #     max_length: int,
-    #     temperature: float,
-    #     top_p: float,
-    # ):
-    #     self.model.eval() # Not essential, but just in case.
-
-    #     prompt = prompts[0]
-
-    #     inputs_ids = self.tokenizer(
-    #         prompt,
-    #         padding=False,
-    #         return_tensors="pt",
-    #         return_token_type_ids=False,
-    #         truncation=True,
-    #         max_length=max_length - 1,
-    #     ).to("cuda")["input_ids"]
-
-
-    #     with torch.no_grad():
-    #         output_ids = self.model.generate(
-    #             inputs_ids,
-    #             do_sample=True,
-    #             use_cache=True,
-    #             top_p=top_p,
-    #             temperature=temperature,
-    #             max_length=max_length,
-    #             pad_token_id=self.tokenizer.pad_token_id,
-    #             output_scores=True,
-    #             return_dict_in_generate=True,
-    #         )
-
-    #     generated_ids = output_ids.sequences[0][inputs_ids.shape[-1]:]
-    #     probabilities = []
-    #     # Compute log probabilities
-    #     for iscore, score in enumerate(output_ids.scores):  # one score per generated token
-    #         token_id = generated_ids[iscore]
-    #         prob = F.log_softmax(score, dim=-1)
-    #         prob = prob[0, token_id].item()
-    #         probabilities.append(prob)
-        
-    #     output = [output_ids.sequences[0]]
-    #     return output, probabilities
-
     
     def completion_tensors(
                             self,
@@ -226,6 +180,8 @@ def automodel_partial_arg_parser():
     args.add_argument("--tokenizer_revision", type=str)
     args.add_argument("--name-override", type=str)
     args.add_argument("--flash-attention2", action="store_true")
+    args.add_argument("--all_ids_dict", default=None, type=str)
+    args.add_argument("--split", choices=["train", "test", "val", "all"], type=str, help="Subset of the data to run on (train/val/test/all).")
     return args
 
 
