@@ -541,3 +541,29 @@ Several people have since contributed to MultiPL-E. Please see the
 [Conda]: https://conda.io/
 [Podman]: https://podman.io/
 [Docker]: https://www.docker.com/
+
+## Notes for replication of "Comparative Study of Selection Strategies"
+This repo was created as a support generation tool for the work **"How Should We Rank LLM Code Generations? A Comparative Study of  Selection Strategies"**. It was modified so that also the log probabilities of the generated tokens are extracted. Also the evaluation scripts were modified to extract the test execution feedbacks.
+
+**To setup:**
+* clone the repo;
+* create virtual environment;
+* install `requirements.txt` (designed to work on Python `3.12`)
+
+### Code generation:
+
+```bash run_gen.sh <DEVICE_ID> <MODEL_PATH>```
+
+For example:
+
+```bash run_gen.sh 0 Qwen/Qwen2.5-Coder-3B-Instruct```
+
+**Evaluation:**
+
+Before running evaluation, run `scripts/add_details_to_assertion_log_message.py`. This script changes the assert statements of the benchmark so that in case a test fails, also _input_, _expected output_, and _actual output_ are printed. This script takes as a input the folder of the code generations.
+
+Tu run evaluation:
+
+```
+docker run --rm --network none -v ./generation_path:/generation_path:rw multipl-e-eval --dir /generation_path --output-dir /generation_path --recursive
+```
