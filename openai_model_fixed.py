@@ -12,7 +12,6 @@ import re
 
 global engine, model
 
-# openai.api_key = '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'
 client = openai.OpenAI()
 
 
