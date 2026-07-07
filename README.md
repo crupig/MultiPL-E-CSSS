@@ -567,3 +567,19 @@ Tu run evaluation:
 ```
 docker run --rm --network none -v ./generation_path:/generation_path:rw multipl-e-eval --dir /generation_path --output-dir /generation_path --recursive
 ```
+
+### Testcases generation:
+
+```bash run_gen_tests.sh <DEVICE_ID> <MODEL_PATH>```
+
+For example:
+
+```bash run_gen_tests.sh 0 Qwen/Qwen2.5-Coder-3B-Instruct```
+
+**Evaluation:**
+
+TBD...
+
+Example of command to run the generated test cases against the generated code solutions:
+
+```bash run_eval_tests.sh```
