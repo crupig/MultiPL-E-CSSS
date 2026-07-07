@@ -8,7 +8,6 @@ MAX_NEW_TOKENS=512
 IDS_FILE="../../constants/ids_train_val_test.json"
 JSON_CONTENT=$(cat "$IDS_FILE")
 
-# python3 automodel.py \
 CUDA_VISIBLE_DEVICES=$DEVICE python3 automodel_vllm_testcases.py \
     --name $MODEL_PATH \
     --root-dataset mbpp \
