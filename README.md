@@ -582,8 +582,6 @@ For example:
 
 ```bash run_gen_tests.sh 0 Qwen/Qwen2.5-Coder-3B-Instruct```
 
-**Evaluation:**
-
 **To execute tests:**
 
 Within each model (generator) and each coding problem (task id), we have to run each generated code solution against each generated test case.
