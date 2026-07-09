@@ -543,9 +543,15 @@ Several people have since contributed to MultiPL-E. Please see the
 [Docker]: https://www.docker.com/
 
 ## Notes for replication of "Comparative Study of Selection Strategies"
-This repo was created as a support generation tool for the work **"How Should We Rank LLM Code Generations? A Comparative Study of  Selection Strategies"**. It was modified so that also the log probabilities of the generated tokens are extracted. Also the evaluation scripts were modified to extract the test execution feedbacks.
+This repo was created as a support generation tool for the work **"How Should We Rank LLM Code Generations? A Comparative Study of  Selection Strategies"**. 
 
-**To setup:**
+The original code generation framework has been modified in order to:
+* extract the log-probabilities when generating code solutions;
+* extracting test execution feedbacks when evaluting the generated solutions;
+* generate test cases instead of code solutions (for the CodeT approach);
+* run the generated test cases against the previously generated code solutions.
+
+### To setup:
 * clone the repo;
 * create virtual environment;
 * install `requirements.txt` (designed to work on Python `3.12`)
@@ -568,7 +574,7 @@ Tu run evaluation:
 docker run --rm --network none -v ./generation_path:/generation_path:rw multipl-e-eval --dir /generation_path --output-dir /generation_path --recursive
 ```
 
-### Testcases generation:
+### Test cases generation (CodeT approach):
 
 ```bash run_gen_tests.sh <DEVICE_ID> <MODEL_PATH>```
 
@@ -578,8 +584,14 @@ For example:
 
 **Evaluation:**
 
-TBD...
+**To execute tests:**
 
-Example of command to run the generated test cases against the generated code solutions:
+Within each model (generator) and each coding problem (task id), we have to run each generated code solution against each generated test case.
 
-```bash run_eval_tests.sh```
+`merge_generations_and_tests_b4_test_exec.py` creates and saves all the `<code_solution, test_statement>` in a folder `test-4-execution` of the suitable format to run tests with docker.
+
+Tu run evaluation:
+
+```
+docker run --rm --network none -v ./test-4-execution:/test-4-execution:rw multipl-e-eval --dir /test-4-execution --output-dir /test-4-execution --recursive
+```
