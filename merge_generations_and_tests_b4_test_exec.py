@@ -23,7 +23,6 @@ def write_for_test_execution(row):
     assert len(completions) == len(row['solution_idx']), f"Number of completions {len(completions)} does not match number of solution idx {len(row['solution_idx'])}"
     data = {
         "name": row['task_idx'],
-        # "test_execution_idx": f"{row['onwhichtomerge']}--TestID::{test_id}--SampleID::{sample_id}",
         "test_idx": row['test_idx'],
         "solution_idx": row['solution_idx'],
         "language": "java",
@@ -42,7 +41,7 @@ def write_for_test_execution(row):
         with gzip.open(os.path.join(output_dir, f"{sample_id}--TestID::{test_id}.json.gz"), "wt") as f:
             json.dump(data, f, indent=4)
     except Exception as e:
-        print(f"NEGATIVO: {e}")
+        print(f"NEIN: {e}")
 
 if __name__ == "__main__":
     tqdm.pandas()
@@ -82,11 +81,7 @@ if __name__ == "__main__":
         print(f"################## {generated_by} ##################")
         num_task_ids = json.load(open('../../../constants/ids_train_val_test.json', 'r'))['MultiPL-E']['test']
         iii = kb.loc[(kb['generated_by'] == generated_by) & (kb['task_idx'].isin(num_task_ids)), 'task_idx'].unique()
-        print(f"RRRR:\t\t{len(iii)} / {len(num_task_ids)}")
-        print(f"RRRR:\t\t {set(num_task_ids)-set(iii)}")
-        # exit()
         kbt['onwhichtomerge'] = kbt['test_idx'].apply(lambda x: x.split("--TestID")[0])
-        print(f"RRR {kbt['task_idx'].nunique()} / {len(num_task_ids)}")
         kbt = kbt.drop(columns=['task_idx', 'generated_by', 'num_unique_asserts'])
 
         merged = kb.merge(kbt, on="onwhichtomerge", how="inner")
