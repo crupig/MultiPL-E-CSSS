@@ -47,7 +47,7 @@ if __name__ == "__main__":
     tqdm.pandas()
     
     # import knowledge base
-    knowlbase_path = "./MultiPL-E/knowlbase/knowlbase_multiple.json"
+    knowlbase_path = "../data/knowlbase/MultiPL-E/knowlbase_multiple.json"
     with open(knowlbase_path, "r") as f:
         kb = json.load(f)
     
@@ -57,7 +57,7 @@ if __name__ == "__main__":
 
     
     # FILTER KNOWLEDGE BASE TO TEST SET SOLUTIONS
-    with open("../data/finetuning/test_upto20_real.jsonl", "r") as f:
+    with open("../data/testset/test.jsonl", "r") as f:
         test_set_uptp20 = [json.loads(line) for line in f]
     test_set_uptp20 = pd.DataFrame(test_set_uptp20)
     solution_ids_to_keep = test_set_uptp20.solution_idx.unique().tolist()
