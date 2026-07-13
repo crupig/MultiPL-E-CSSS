@@ -69,7 +69,7 @@ if __name__ == "__main__":
     # SPLIT BY GENERATED_BY
     for generated_by in kb['generated_by'].unique():
         # IMPORT TESTS KNOWLEDGE BASE
-        test_path = f"../knowlbase-tests/{generated_by}_knowlbase_tests_multiple.jsonl"
+        test_path = f"../data/knowlbase-tests/{generated_by}_knowlbase_tests_multiple.jsonl"
         if not os.path.exists(test_path):
             continue
         
